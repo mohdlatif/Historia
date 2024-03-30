@@ -16,14 +16,28 @@ load_dotenv()
 # os.environ["VECTARA_API_KEY"] = getpass.getpass("Vectara API Key:")
 openai_api_key = os.getenv("OPENAI_API_KEY")
 
+
+# Check if the environment variable is set
+if "OPENAI_API_KEY" in os.environ:
+    openai_api_key = os.getenv("OPENAI_API_KEY")
+    vectara_customer_id=os.getenv("VECTARA_CUSTOMER_ID")
+    vectara_corpus_id=os.getenv("VECTARA_CORPUS_ID")
+    vectara_api_key=os.getenv("VECTARA_API_KEY")
+else:
+    # Use st.secrets as fallback
+    openai_api_key = st.secrets["OPENAI_API_KEY"]
+    vectara_customer_id=st.secrets["VECTARA_CUSTOMER_ID"]
+    vectara_corpus_id=st.secrets["VECTARA_CORPUS_ID"]
+    vectara_api_key=st.secrets["VECTARA_API_KEY"]
+
 vectorstore = Vectara(
-    vectara_customer_id=os.getenv("VECTARA_CUSTOMER_ID"),
-    vectara_corpus_id=os.getenv("VECTARA_CORPUS_ID"),
-    vectara_api_key=os.getenv("VECTARA_API_KEY"),
+    vectara_customer_id=vectara_customer_id,
+    vectara_corpus_id=vectara_corpus_id,
+    vectara_api_key=vectara_api_key,
 )
 
 st.title("Interactive History Chatbot")
-
+st.write(vectara_api_key)
 characters = ["Imam-Ahmad-bin-Hanbal", "Ibn Sina", "Ibn Battuta"]
 selected_character = st.selectbox("Choose a historical figure:", characters)
 
